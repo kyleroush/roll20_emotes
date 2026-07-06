@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "campaigns": {
+      "$campaignId": {
+        "emotes": {
+          ".read": "true",
+          ".write": "true"
+        }
+      }
+    }
+  }
+}

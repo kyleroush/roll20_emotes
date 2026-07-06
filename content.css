@@ -1,0 +1,78 @@
+/* Emote Bubbles Container */
+#r20-emote-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 320px;
+  height: 500px;
+  pointer-events: none;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 12px;
+  overflow: visible;
+}
+
+/* Emote Bubble Styling */
+.r20-emote-bubble {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(18, 18, 28, 0.75);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 8px 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  user-select: none;
+  transform-origin: bottom center;
+}
+
+/* Sender Name text */
+.r20-emote-bubble-sender {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Emote emoji character */
+.r20-emote-bubble-char {
+  font-size: 32px;
+  line-height: 1.1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Floating & Swaying Animation */
+@keyframes r20FloatUp {
+  0% {
+    transform: translateY(120px) translateX(var(--r20-random-x)) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    transform: translateY(60px) translateX(calc(var(--r20-random-x) + 12px)) scale(1.15) rotate(var(--r20-random-rotate));
+    opacity: 1;
+  }
+  35% {
+    transform: translateY(0px) translateX(calc(var(--r20-random-x) - 12px)) scale(1) rotate(calc(var(--r20-random-rotate) * -0.5));
+  }
+  75% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-280px) translateX(calc(var(--r20-random-x) + 6px)) scale(0.85) rotate(var(--r20-random-rotate));
+    opacity: 0;
+  }
+}

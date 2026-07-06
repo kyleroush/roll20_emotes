@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Roll20 Emote Share",
+  "version": "1.0",
+  "description": "Select and share floating emotes with players in the same campaign on Roll20.",
+  "permissions": [
+    "activeTab"
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Share Emotes",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://app.roll20.net/editor*",
+        "https://app.roll20.net/editor/"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "https://rem-apple-default-rtdb.firebaseio.com/*"
+  ]
+}
