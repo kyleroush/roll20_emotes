@@ -1,0 +1,59 @@
+name: Build and Package Extension
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Package Extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create Chrome Package
+        run: |
+          mkdir chrome-temp
+          cp background.js content.js content.css popup.html popup.css popup.js icon.png PRIVACY_POLICY.md chrome-temp/
+          cp manifest-chrome.json chrome-temp/manifest.json
+          cd chrome-temp
+          zip -r ../roll20-emote-share-chrome.zip .
+          cd ..
+          rm -rf chrome-temp
+
+      - name: Create Firefox Package
+        run: |
+          mkdir firefox-temp
+          cp background.js content.js content.css popup.html popup.css popup.js icon.png PRIVACY_POLICY.md firefox-temp/
+          cp manifest-firefox.json firefox-temp/manifest.json
+          cd firefox-temp
+          zip -r ../roll20-emote-share-firefox.zip .
+          cd ..
+          rm -rf firefox-temp
+
+      - name: Upload Chrome ZIP as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: roll20-emote-share-chrome
+          path: roll20-emote-share-chrome.zip
+
+      - name: Upload Firefox ZIP as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: roll20-emote-share-firefox
+          path: roll20-emote-share-firefox.zip
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            roll20-emote-share-chrome.zip
+            roll20-emote-share-firefox.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
