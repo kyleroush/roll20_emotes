@@ -1,0 +1,61 @@
+name: Automate Deploy to Web Stores
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger only when a version tag is pushed (e.g. v1.0.0)
+
+jobs:
+  publish:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Package Chrome Extension
+      - name: Build Chrome Package
+        run: |
+          mkdir chrome-temp
+          cp background.js content.js content.css popup.html popup.css popup.js icon.png PRIVACY_POLICY.md chrome-temp/
+          cp manifest-chrome.json chrome-temp/manifest.json
+          cd chrome-temp
+          zip -r ../roll20-emote-share-chrome.zip .
+          cd ..
+          rm -rf chrome-temp
+
+      # 2. Package Firefox Extension
+      - name: Build Firefox Package
+        run: |
+          mkdir firefox-temp
+          cp background.js content.js content.css popup.html popup.css popup.js icon.png PRIVACY_POLICY.md firefox-temp/
+          cp manifest-firefox.json firefox-temp/manifest.json
+          cd firefox-temp
+          zip -r ../roll20-emote-share-firefox.zip .
+          cd ..
+          rm -rf firefox-temp
+
+      # 3. Publish to Chrome Web Store
+      # Documentation: https://github.com/fregante/chrome-webstore-upload
+      - name: Upload to Chrome Web Store
+        uses: fregante/chrome-webstore-upload@v4
+        with:
+          file: roll20-emote-share-chrome.zip
+          extension-id: ${{ secrets.CHROME_APP_ID }}
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+
+      # 4. Upload and Submit to Firefox AMO
+      # Documentation: https://github.com/fregante/web-ext-github-action
+      - name: Upload & Sign on Firefox AMO
+        uses: fregante/web-ext-github-action@v2
+        with:
+          command: sign
+          # We extract from the pre-built Firefox folder
+          source-dir: firefox-temp
+          channel: listed
+          addon-id: ${{ secrets.AMO_ADDON_ID }}
+          jwt-issuer: ${{ secrets.AMO_JWT_ISSUER }}
+          jwt-secret: ${{ secrets.AMO_JWT_SECRET }}
