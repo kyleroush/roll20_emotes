@@ -8,10 +8,15 @@
   --danger-color: #ff3b30;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
-  width: 250px;
+  width: 260px;
+  min-height: 295px;
   background-color: var(--bg-color);
   color: var(--text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -24,6 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: 295px;
 }
 
 .popup-header {
