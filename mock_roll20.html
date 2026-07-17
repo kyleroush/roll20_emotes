@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Epic Adventure Campaign | Roll20</title>
   <link rel="stylesheet" href="content.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #1a1a24;
@@ -73,13 +76,17 @@
 
     /* Mock Popup Simulator Box */
     #mock-popup-simulator {
-      width: 250px;
+      width: 270px;
+      height: 335px;
       background: rgba(22, 22, 30, 0.95);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 12px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .popup-header {
